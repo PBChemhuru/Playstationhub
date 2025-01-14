@@ -56,49 +56,5 @@ class CataloguePageController extends Controller
         return view('partials.catalogue',compact('products'))->render();
     }
 
-    public function addcart(Request $request)
-    {
-        $productId = $request->game_id;
-        $cartItem['productId'] = $productId;
-        $quantity =$request->quantity;
-        $product = Product::find($productId);
-        if (!$product) {
-            return redirect()->route('/')->with('error', 'Product not found!');
-        }
-        else
-        {
-            if(!empty(Sale::where('game_id',$productId)))
-            {   
-                $salesProduct=Sale::where('game_id',$productId)->first();
-                $cartItem['price']= $salesProduct->new_price;
-                $cartItem['productName']= $salesProduct->name;
-                $cartItem['productQuantity'] = $quantity;
-                $cartItem['image'] = $salesProduct->image;
-            }
-            else
-            {
-                $products = Product::where($productId)->first();
-                $cartItem['price']= $products->price;
-                $cartItem['productName']= $products->name;
-                $cartItem['productQuantity'] =  $quantity;
-                $cartItem['image'] = $products->image;
-            }
-        }
-        
-        if(Auth::check())
-       {
-            
-            $userid =Auth::user()->uuid;
-            $cartItem['uuid']= $userid;
-            
-       }
-       else
-       {
-        $guestUuid = Cookie::get('guest_uuid');
-        $cartItem['uuid']= $guestUuid;
-       }
-        Cart::create($cartItem);
-        return redirect()->route('getCatalogue')->with('success', 'Product added to cart successfully!');
     
-    }
 }

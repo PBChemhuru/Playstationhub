@@ -27,11 +27,15 @@ Route::middleware([EnsureGuestUuid::class])->group(function () {
     //contact email
     Route::post('/user/contactus/email', [MailController::class, 'sendquery'])->name('contactusemail');
     //addcart
-    Route::post('/addtocart', [CataloguePageController::class, 'addcart'])->name('addcart');
+    Route::post('/addtocart', [CartController::class, 'addcart'])->name('addcart');
+     //increasecart
+     Route::post('/increasecart', [CartController::class, 'increaseQuantity'])->name('increasecart');
+     //decreasecart
+     Route::post('/decreasecart', [CartController::class, 'decreaseQuantity'])->name('decreasecart');
+      //deleteitemcart
+      Route::delete('/deletecartitem/{id}', [CartController::class, 'deletecartitem'])->name('deletecartitem');
     //getCart
     Route::get('/user/getcart', [CartController::class, 'getCart'])->name('getCart');
-    //delete cart
-    Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
     //login page
     Route::get('/user/login', [WelcomePageController::class, 'login'])->name('userin');
     Route::get('/user/register', [WelcomePageController::class, 'register'])->name('registeration');

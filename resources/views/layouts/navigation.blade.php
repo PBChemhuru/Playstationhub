@@ -48,6 +48,9 @@
                                         <span class="badge bg-danger text-white ms-1">{{ session('cart_count') }}</span>
                                     @endif
                                 </x-nav-link>
+                                <x-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')">
+                                    {{ __('Contact Us') }}
+                                </x-nav-link>
 
                             </div>
                         @endif

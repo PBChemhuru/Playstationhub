@@ -11,7 +11,6 @@ class Cart extends Model
         'productName',
         'productId',
         'productQuantity',
-        'image',
-        'purcashed'  
-    ];
+        'image',   
+     ];
 }

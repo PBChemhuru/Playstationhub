@@ -35,7 +35,7 @@
                         
                         <form action="{{ route('addcart') }}" method="POST">
                             @csrf
-                            <input value="{{ $item->id }}" hidden id="id" name="id">
+                            <input value="{{ $item->id }}" hidden id="game_id" name="game_id">
                             <button type="button" class="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-l-md p-2"
                                 onclick="updateQuantity('decrease')">
                                 <span class="font-semibold text-lg">-</span>

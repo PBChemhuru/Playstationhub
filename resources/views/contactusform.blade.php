@@ -1,4 +1,5 @@
 <x-app-layout>
+    <center>
     <form method="POST" action="{{ route('contactusemail') }}">
         @csrf
         <label for="email">Email</label><br>
@@ -24,4 +25,5 @@
 
         <button class="btn btn-primary my-6" type="submit" sty>Submit</button>
     </form>
-</x-guest-layout>
+</center>
+</x-app-layout>
