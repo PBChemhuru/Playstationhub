@@ -142,9 +142,9 @@
                             <!-- Empty stars -->
                             @for ($i = 0; $i < $emptyStars; $i++)
                                 <span style="color: lightgray;">&#9734;</span>
-                            @endfor
-                            {{number_format($rating, 2)}}
+                            @endfor                          
                         </p>
+                        <p> Rating {{number_format($rating, 2)}}/5 from {{$count}} users </p>
                         <p class="card-text">{{ $item->description }}</p>
 
                         <?php

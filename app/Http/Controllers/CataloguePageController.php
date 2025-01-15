@@ -17,7 +17,8 @@ class CataloguePageController extends Controller
         $item = Product::where('id',$id)->get()->first();
         $reviews = Review::where('product_id',$id)->get();
         $rating = Review::where('product_id',$id)->avg('rating');
-        return view('catalogue.item',compact(['item','reviews','rating']));
+        $count =Review::where('product_id',$id)->count('rating');
+        return view('catalogue.item',compact(['item','reviews','rating','count']));
     }
 
     public function filter(Request $request)
