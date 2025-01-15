@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -14,7 +15,9 @@ class CataloguePageController extends Controller
     public function getItem($id)
     {
         $item = Product::where('id',$id)->get()->first();
-        return view('catalogue.item',compact('item'));
+        $reviews = Review::where('product_id',$id)->get();
+        $rating = Review::where('product_id',$id)->avg('rating');
+        return view('catalogue.item',compact(['item','reviews','rating']));
     }
 
     public function filter(Request $request)
