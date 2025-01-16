@@ -14,7 +14,7 @@ use App\Http\Middleware\AdminMiddleware;
 Route::middleware([EnsureGuestUuid::class])->group(function () {
     Route::get('/', [WelcomePageController::class, 'welcome'])->name('welcome');
     //show by genre
-    Route::get('/{genre}', [WelcomePageController::class, 'showByGenre'])->name('gamesbyGenre');
+    Route::get('/games/{genre}', [WelcomePageController::class, 'showByGenre'])->name('gamesbyGenre');
     //get catalogue
     Route::get('catalogue/catalogue', [WelcomePageController::class, 'getCatalogue'])->name('getCatalogue');
     //get catalogue item

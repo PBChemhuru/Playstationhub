@@ -17,8 +17,16 @@ class ReviewController extends Controller
         ]);
         
         $review['uuid'] = Auth::user()->uuid;
+        $noduplicate= Review::where('uuid',$review['uuid'])->where('product_id',$review['product_id'])->get();
+        if($noduplicate->isempty())
+        {
+            Review::create($review);
+        }
+        else
+        {
+            $noduplicate= Review::where('uuid',$review['uuid'])->where('product_id',$review['product_id'])->update($review);
+        }
         
-        Review::create($review);
         
         return redirect()->back()->with('success', 'Review added');   
         //dont forget to  added verifed purchaser when you finish fixing the profile

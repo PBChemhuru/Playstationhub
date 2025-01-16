@@ -9,7 +9,7 @@
         }
 
         .feedback-form {
-            max-width: 400px;
+            max-width: 80%;
             margin: 0 auto;
         }
 
@@ -116,11 +116,43 @@
         }
     </style>
     <div class="container" style="margin-top: 10pt;">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="{{ asset($item->image) }}" class="card-img-top" alt="Product Name"
-                        style="object-fit: cover; height: 200px;">
+
+
+        <div class="card mb-4" style="height: 500px">
+            <div class="row" style="height: 500px">
+                <div class="col-md-8" style="width: 650px;">
+                    <div class="row" style="width: 100%">
+                        <img src="{{ asset($item->image) }}" alt="Product Name" style="width:100% ; height: 350px;margin-left:20pt">
+                    </div>
+                    <div class="row" style="height: 130px">
+                        <center>
+                            <form action="{{ route('addcart') }}" method="POST" style="width: 100%;margin:15pt" >
+                                @csrf
+                                <input value="{{ $item->id }}" hidden id="game_id" name="game_id">
+                                <button type="button" class="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-l-md p-2"
+                                    onclick="updateQuantity('decrease')">
+                                    <span class="font-semibold text-lg">-</span>
+                                </button>
+    
+                                <!-- Quantity Input Field -->
+                                <input type="number" id="quantity" name="quantity" value="1"
+                                    class="w-16 text-center bg-gray-100 text-gray-800 border border-gray-300 rounded-md"
+                                    min="1" readonly>
+    
+                                <!-- Increase Button -->
+                                <button type="button" class="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-r-md p-2"
+                                    onclick="updateQuantity('increase')">
+                                    <span class="font-semibold text-lg">+</span>
+                                </button>
+                                <button class="btn btn-success"type="submit">Add to cart</button>
+                            </form>
+                        </center>
+                        
+                    </div>
+
+                </div>
+
+                <div class="col-md-4" style="width: 40%">
                     <div class="card-body d-flex flex-column">
 
                         <h5 class="card-title">{{ $item->name }}</h5>
@@ -142,9 +174,9 @@
                             <!-- Empty stars -->
                             @for ($i = 0; $i < $emptyStars; $i++)
                                 <span style="color: lightgray;">&#9734;</span>
-                            @endfor                          
+                            @endfor
                         </p>
-                        <p> Rating {{number_format($rating, 2)}}/5 from {{$count}} users </p>
+                        <p> Rating {{ number_format($rating, 2) }}/5 from {{ $count }} users </p>
                         <p class="card-text">{{ $item->description }}</p>
 
                         <?php
@@ -153,9 +185,9 @@
                             ->first();
                         ?>
                         @if (empty($onsale))
-                            <p class="card-text font-weight-bold">{{ $item->price }}</p>
+                            <p class="card-text font-weight-bold">${{ $item->price }}</p>
                         @else
-                            <p class="card-text font-weight-bold">{{ $onsale->new_price }}</p>
+                            <p class="card-text font-weight-bold">${{ $onsale->new_price }}</p>
                         @endif
                         @foreach ($genres as $genre)
                             <p class="inline-flex items-center">
@@ -170,96 +202,83 @@
                             </p>
                         @endforeach
 
-                        <form action="{{ route('addcart') }}" method="POST">
-                            @csrf
-                            <input value="{{ $item->id }}" hidden id="game_id" name="game_id">
-                            <button type="button" class="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-l-md p-2"
-                                onclick="updateQuantity('decrease')">
-                                <span class="font-semibold text-lg">-</span>
-                            </button>
 
-                            <!-- Quantity Input Field -->
-                            <input type="number" id="quantity" name="quantity" value="1"
-                                class="w-16 text-center bg-gray-100 text-gray-800 border border-gray-300 rounded-md"
-                                min="1" readonly>
-
-                            <!-- Increase Button -->
-                            <button type="button" class="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-r-md p-2"
-                                onclick="updateQuantity('increase')">
-                                <span class="font-semibold text-lg">+</span>
-                            </button>
-                            <button class="btn btn-success"type="submit">Add to cart</button>
-                        </form>
                     </div>
+
                 </div>
             </div>
+
         </div>
-        <div class="row">
-            <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <div class="feedback-form">
-                            <h2>Leave a Review</h2>
-                            <form action="{{ route('postReview') }}" method="POST" id="feedbackForm">
-                                @csrf
-                                <!-- Star Rating -->
-                                <div class="rating">
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5">&#9733;</label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4">&#9733;</label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3">&#9733;</label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2">&#9733;</label>
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1">&#9733;</label>
-                                </div>
 
-                                <!-- Comment Input -->
-                                <div class="comment">
-                                    <label for="comment">Tell us more:</label><br>
-                                    <textarea id="comment" name="comment" required></textarea>
-                                </div>
+        <h2>Leave a Review</h2>
+        @auth
+            <div class="feedback-form">
 
-                                <!-- Hidden Field for Product ID -->
-                                <input type="hidden" name="product_id" value="{{ $item->id }}">
+                <form action="{{ route('postReview') }}" method="POST" id="feedbackForm">
+                    @csrf
+                    <!-- Star Rating -->
+                    <div class="rating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5">&#9733;</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">&#9733;</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">&#9733;</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">&#9733;</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1">&#9733;</label>
+                    </div>
 
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </form>
+                    <!-- Comment Input -->
+                    <div class="comment">
+                        <label for="comment">Tell us more:</label><br>
+                        <textarea id="comment" name="comment" required></textarea>
+                    </div>
+
+                    <!-- Hidden Field for Product ID -->
+                    <input type="hidden" name="product_id" value="{{ $item->id }}">
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        @endauth
+        @guest
+            <div>
+                <button class="btn btn-primary"><a href={{ route('userin') }}>Login</a></button>
+            </div>
+        @endguest
+        <div style="margin-top: 20pt">
+            @foreach ($reviews as $review)
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <i class="fas fa-user-alt"></i>
+                            <?php $username = DB::table('users')
+                                ->where('uuid', $review->uuid)
+                                ->value('name'); ?>
+                            <span class="author-name">{{ $username }}</span>
+                        </div>
+                        <div class="comment-rating">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $review->rating)
+                                    <span class="star">&#9733;</span>
+                                @else
+                                    <span class="star">&#9734;</span>
+                                @endif
+                            @endfor
                         </div>
                     </div>
-                    @foreach ($reviews as $review)
-                        <div class="comment-card">
-                            <div class="comment-header">
-                                <div class="comment-author">
-                                    <i class="fas fa-user-alt"></i>
-                                    <span class="author-name">{{ $review->uuid }}</span>
-                                </div>
-                                <div class="comment-rating">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= $review->rating)
-                                            <span class="star">&#9733;</span>
-                                        @else
-                                            <span class="star">&#9734;</span>
-                                        @endif
-                                    @endfor
-                                </div>
-                            </div>
-                            <div class="comment-body">
-                                <p>{{ $review->comment }}</p>
-                            </div>
-                            <div class="comment-footer">
-                                <span class="comment-date">Posted on:
-                                    {{ $review->created_at->format('F j, Y') }}</span>
-                            </div>
-                        </div>
-                    @endforeach
-
-
+                    <div class="comment-body">
+                        <p>{{ $review->comment }}</p>
+                    </div>
+                    <div class="comment-footer">
+                        <span class="comment-date">Posted on:
+                            {{ $review->created_at->format('F j, Y') }}</span>
+                    </div>
                 </div>
-            </div>
+            @endforeach
 
 
         </div>
