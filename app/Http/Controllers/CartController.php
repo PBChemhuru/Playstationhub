@@ -39,7 +39,6 @@ class CartController extends Controller
         return redirect()->route('getCart')->with('error', 'Item removed from cart');
     }
 
-    public function checkout() {}
 
     public function addcart(Request $request)
     {
