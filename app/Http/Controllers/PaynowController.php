@@ -74,4 +74,12 @@ class PaynowController extends Controller
         // Clear the cart
         Cart::where('uuid', Auth::user()->uuid)->delete();
     }
+
+    public function purchasehistory()
+    {
+        $uuid = Auth::user()->uuid;
+        $phis = Invoice::where('uuid',$uuid)->get();
+
+        return view('purchasehistory', compact('phis'));
+    }
 }

@@ -42,8 +42,7 @@
                             <td>{{ \Carbon\Carbon::parse($items->release_date)->format('Y') }}</td>
                             <td>
                                 <?php
-                                $things = $items->genre;
-                                $genres = explode(',', $things);
+                                $genres = json_decode($items->genre);
                                 ?>
                                 @foreach ($genres as $genre)
                                     <p class="inline-flex items-center">

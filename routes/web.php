@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/user/checkout', [PaynowController::class, 'checkout'])->name('checkout');
     Route::post('/user/leavereview',[ReviewController::class, 'postReview'])->name('postReview');
+    Route::get('/user/purchasehistory', [PaynowController::class, 'purchasehistory'])->name('purchasehistory');
 });
 
 Route::middleware(['auth',AdminMiddleware::class])->group(function () {

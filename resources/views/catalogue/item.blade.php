@@ -189,6 +189,7 @@
                         @else
                             <p class="card-text font-weight-bold">${{ $onsale->new_price }}</p>
                         @endif
+                        <?php $genres =json_decode( $item->genre)?>
                         @foreach ($genres as $genre)
                             <p class="inline-flex items-center">
                                 <!-- Blue circle with a white dot -->
@@ -201,6 +202,7 @@
                                 </a>
                             </p>
                         @endforeach
+                        
 
 
                     </div>

@@ -7,11 +7,12 @@
                     @csrf
                     <div>
                         <h4>Filter by Genre:</h4>
-                        @foreach ($genre as $genres => $name)
+
+                        @foreach ($genre as $genres)
                             <label>
-                                <input type="checkbox" name="genres[]" value="{{ $genres }}">
+                                <input type="checkbox" name="genres[]" value="{{ $genres->genre }}">
                                 <a href="/{{ $genres }}"
-                                    style="text-decoration: none; color: inherit;">{{ $genres }}</a>
+                                    style="text-decoration: none; color: inherit;">{{ $genres->genre }}</a>
                             </label><br>
                         @endforeach
 
@@ -47,6 +48,7 @@
                 <div class="row">
                     <div id="catalogue">
                         <div class="row">
+
                             @foreach ($all as $items)
                                 <div class="col-md-3 mb-3">
                                     <div class="card h-100">
@@ -59,8 +61,11 @@
                                                 <p class="card-text">Price: ${{ $items->price }}</p>
                                                 <p class="card-text">Released:
                                                     {{ \Carbon\Carbon::parse($items->release_date)->format('Y') }}</p>
-                                                <a href="/{{ $items->genre }}"
-                                                    class="btn btn-primary rounded-pill">{{ $items->genre }}</a>
+                                                    <?php $genres = json_decode($items->genre, true) ?: []; ?>
+                                                    @foreach ($genres as $genre)
+                                                        <a href="/{{$genre}}" class="btn btn-primary rounded-pill">{{ $genre }}</a>
+                                                    @endforeach
+                                               
                                             </div>
                                         </div>
                                     </div>

@@ -44,9 +44,16 @@
 
                                 <x-nav-link :href="route('getCart')" :active="request()->routeIs('getCart')">
                                     {{ __('Cart') }}
-                                    @if (session('cart_count') > 0)
-                                        <span class="badge bg-danger text-white ms-1">{{ session('cart_count') }}</span>
+
+                                    <?php 
+                                    $uuid = Auth::check() ? Auth::user()->uuid : Cookie::get('guest_uuid');
+                                    $itemCount = DB::table('carts')->where('uuid', $uuid)->count();?>
+                                    @if ($itemCount > 0)
+                                        <span class="badge bg-danger text-white ms-1">{{ $itemCount}}</span>
                                     @endif
+                                </x-nav-link>
+                                <x-nav-link :href="route('purchasehistory')" :active="request()->routeIs('purchasehistory')">
+                                    {{ __('Purchase History') }}
                                 </x-nav-link>
                                 <x-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')">
                                     {{ __('Contact Us') }}

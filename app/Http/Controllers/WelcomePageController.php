@@ -32,7 +32,7 @@ class WelcomePageController extends Controller
     public function getCatalogue()
     {
         $all = Product::all()->sortBy('name');
-        $genre =  Product::all()->select('genre')->groupBy('genre');
+        $genre =  genre::all();
         $year =  Product::selectRaw('YEAR(release_date) as year')
             ->groupBy('year')
             ->get();

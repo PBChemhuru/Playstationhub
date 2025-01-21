@@ -25,8 +25,11 @@
         <!-- Genre -->
         <div class="mb-4">
             <label for="genre" class="block text-gray-700">Genre</label>
-            <input type="text" id="genre" name="genre" value="{{ old('genre') }}"
-                class="w-full px-4 py-2 border rounded-md text-gray-700">
+                <select id="genre" name="genre[]" class="form-control" multiple>
+                    @foreach($genres as $genre)
+                    <option value="{{$genre->genre}}">{{$genre->genre}}</option>
+                    @endforeach
+                </select>
             @error('genre')
                 <p style="color:red;size:13px">{{ $message }}</p>
             @enderror
@@ -70,4 +73,13 @@
             </button>
         </div>
     </form>
+    <script>
+        $(document).ready(function() {
+            $('#genre').select2({
+                tags: true, // Allow adding custom items
+                placeholder: "Select or add items",
+                width: '100%' // Make it responsive
+            });
+        });
+    </script>
 </x-app-layout>

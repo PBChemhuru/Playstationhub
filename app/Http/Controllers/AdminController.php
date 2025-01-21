@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\genre;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
@@ -10,7 +11,8 @@ class AdminController extends Controller
 {
     public function addProduct()
     {
-        return view('products.createproduct');
+        $genres = genre::all();
+        return view('products.createproduct',compact('genres'));
     }
 
     public function Products()
@@ -25,7 +27,8 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required',
-            'genre' => 'required',
+            'genre' => 'required|array',
+            'genre.*' => 'string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'release_date' => 'required',
             'description' => 'required',
@@ -34,7 +37,7 @@ class AdminController extends Controller
         $request->image->move(public_path('images'), $imagename);
         $product['name'] = $request->name;
         $product['price'] = $request->price;
-        $product['genre'] = $request->genre;
+        $product['genre'] = json_encode($request->genre);
         $product['image'] = 'images/' . $imagename;
         $product['release_date'] = $request->release_date;
         $product['description'] = $request->description;
